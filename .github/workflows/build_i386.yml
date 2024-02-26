@@ -1,0 +1,25 @@
+name: PikaOS Build (i386)
+
+on:
+  workflow_dispatch
+
+jobs:
+  build:
+    #runs-on: self-hosted
+    runs-on: ubuntu-latest
+    container:
+      image: ghcr.io/pikaos-linux/pika-i386-package-container:latest
+      volumes:
+        - /proc:/proc
+      options: --privileged -it
+
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        submodules: true
+  
+    - name: Update apt cache
+      run: apt-get update
+
+    - name: Build Package
+      run: ./main32.sh
